@@ -42,17 +42,28 @@ const Sidebar = ({ user, closeToggle }) => {
             Home
           </NavLink>
           <h3 className="mt-2 px-5 text-base 2xl:text-xl">
-            {categories.slice(0, categories.length - 1)}.map((category) => (
-            {
+            {categories.slice(0, categories.length - 1).map((category) => (
+            
               <NavLink
-                to={`/category/${categories.name}`}
+                to={`/category/${category.name}`}
                 className={({ isActive }) => (isActive ? isActiveStyle : isNotActiveStyle)}
-                onClick={handleCloseSidebar}></NavLink>
-            }
-            ))
+                onClick={handleCloseSidebar}
+                key={category.name}>
+                {category.name}
+              </NavLink>
+            
+            ))}
           </h3>
         </div>
       </div>
+      { user && (
+        <Link 
+        to={`user-profile/${user._id}`}
+        className="flex my-5 mb-3 gap-2"
+        >
+          <img src={user.image} alt="user"  className='w-10 h-10 rounded-full'/>
+        </Link>
+      )}
     </div>
   );
 };
