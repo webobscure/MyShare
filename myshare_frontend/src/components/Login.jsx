@@ -1,5 +1,5 @@
 import React from 'react';
-import {GoogleLogin} from '@react-oauth/google'
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import shareVideo from '../assets/share.mp4';
@@ -11,13 +11,13 @@ const Login = () => {
   const navigate = useNavigate();
   const responseGoogle = (response) => {
     console.log(response);
-    localStorage.setItem('user', JSON.stringify(response.profileObj));
-    const { name, googleId, imageUrl } = response.profileObj;
+    localStorage.setItem('user', JSON.stringify(response));
+    const {  clientId, credential } = response;
     const doc = {
-      _id: googleId,
+      _id: clientId,
       _type: 'user',
-      userName: name,
-      image: imageUrl,
+      userName: credential,
+      
     };
     client.createIfNotExists(doc).then(() => {
       navigate('/', { replace: true });
@@ -39,26 +39,27 @@ const Login = () => {
 
         <div className="absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0    bg-blackOverlay">
           <div className="p-5">
-            <img src={logo} width="130px" alt='logo'/>
+            <img src={logo} width="130px" alt="logo" />
           </div>
 
           <div className="shadow-2xl">
-            <GoogleLogin
-              clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
-              render={(renderProps) => (
-                <button
-                  type="button"
-                  className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <FcGoogle className="mr-4" /> Sign in with google
-                </button>
-              )}
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy="single_host_origin"
-            />
+            <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}>
+              <GoogleLogin
+                
+                render={(renderProps) => (
+                  <button
+                    type="button"
+                    className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}>
+                    <FcGoogle className="mr-4" /> Sign in with google
+                  </button>
+                )}
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy="single_host_origin"
+              />
+            </GoogleOAuthProvider>
           </div>
         </div>
       </div>
