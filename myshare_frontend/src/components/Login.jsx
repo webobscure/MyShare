@@ -2,6 +2,7 @@ import React from 'react';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
+import jwt_decode from 'jwt-decode'
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
 
@@ -10,13 +11,15 @@ import { client } from '../client';
 const Login = () => {
   const navigate = useNavigate();
   const responseGoogle = (response) => {
-    console.log(response);
-    localStorage.setItem('user', JSON.stringify(response));
-    const {  clientId, credential } = response;
+   console.log("Encoded JWT ID token: " + response.credential);
+   let userObject = jwt_decode(response.credential);
+   console.log(userObject);
+    const {  googleId, credential, picture } = response.credential;
     const doc = {
-      _id: clientId,
+      _id: googleId,
       _type: 'user',
       userName: credential,
+      image: picture
       
     };
     client.createIfNotExists(doc).then(() => {
