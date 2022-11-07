@@ -14,9 +14,10 @@ const Login = () => {
    console.log("Encoded JWT ID token: " + response.credential);
    let userObject = jwt_decode(response.credential);
    console.log(userObject);
-    const {  googleId, credential, picture } = response.credential;
+   localStorage.setItem('user', JSON.stringify(userObject))
+    const {  aud, credential, picture } = userObject;
     const doc = {
-      _id: googleId,
+      _id: aud,
       _type: 'user',
       userName: credential,
       image: picture
