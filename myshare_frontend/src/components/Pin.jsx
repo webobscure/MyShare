@@ -9,7 +9,7 @@ import { fetchUser } from '../utils/fetchUser';
 
 const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
   const [postHovered, setPostHovered] = useState(false);
-  // const [savingPost, setSavingPost] = useState(false);
+  // const [savingPost, setSavingPost] = useState(false); 2:56:20
   const navigate = useNavigate();
   const user = fetchUser();
 
@@ -34,6 +34,14 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
         window.location.reload();
       })
     } 
+  }
+
+  const deletePin = (id) => {
+    client
+    .delete(id)
+    .then(() => {
+      window.location.reload();
+    })
   }
 
 
@@ -73,6 +81,30 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
                   Save
                 </button>
               )}
+            </div>
+            <div className="flex justify-between items-center gap-2 w-full">
+                {destination && (
+                  <a href={destination}
+                  target="blank"
+                  rel="noreferrer"
+                  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
+                  >
+                    <BsFillArrowUpRightCircleFill />
+                    {destination.length > 20 ? destination.slice(8, 20) : destination.slice(8)}
+                  </a>
+                )}
+                {postedBy?._id === user.sub && (
+                  <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    savePin(_id);
+                    deletePin(_id);
+                  }}
+                  className="bg-white p-2 opacity-70 hover:opacity-100 font-bold text-dark text-base rounded-3xl hover:shadow-md outlined-none">
+                    <AiTwotoneDelete />
+                  </button>
+                )}
             </div>
           </div>
         )}
