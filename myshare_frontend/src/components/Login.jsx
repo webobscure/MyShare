@@ -15,11 +15,11 @@ const Login = () => {
    let userObject = jwt_decode(response.credential);
    console.log(userObject);
    localStorage.setItem('user', JSON.stringify(userObject))
-    const {  aud, credential, picture } = userObject;
+    const {  sub, name, picture } = userObject;
     const doc = {
-      _id: aud,
+      _id: sub,
       _type: 'user',
-      userName: credential,
+      userName: name,
       image: picture
       
     };
