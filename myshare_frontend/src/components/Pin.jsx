@@ -12,7 +12,6 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
   // const [savingPost, setSavingPost] = useState(false); 2:56:20
   const navigate = useNavigate();
   const user = fetchUser();
-
   const alreadySaved = !!(save?.filter((item) => item.postedBy._id === user.sub))?.length;
 
   const savePin = (id) => {
@@ -109,6 +108,14 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
           </div>
         )}
       </div>
+      <Link to={`user-profile/${user?._id}`} className="flex gap-2 mt-2 items-center">
+        <img 
+          className="w-8 h-8 rounded-full object-cover"
+          src={postedBy?.image}
+          alt="user-profile"
+        />
+        <p className="font-semibold capitilize">{postedBy?.userName}</p>
+      </Link>
     </div>
   );
 };
