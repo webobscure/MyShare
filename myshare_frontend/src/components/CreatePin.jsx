@@ -40,8 +40,7 @@ const CreatePin = ({ user }) => {
   };
 
   const savePin = () => {
-    console.log(user);
-    if(title && about && destination && imageAsset?._id && category) {
+    if (title && about && destination && imageAsset?._id && category) {
       const doc = {
         _type: 'pin',
         title,
@@ -51,24 +50,28 @@ const CreatePin = ({ user }) => {
           _type: 'image',
           asset: {
             _type: 'reference',
-            _ref: imageAsset?._id
+            _ref: imageAsset?._id,
           },
-          userId: user._id,
-          postedBy: {
-            _type: 'postedBy',
-            _ref: user._id,
-          },
-          category,
-        }
-      }
-       client.create(doc)
-       .then(() => {
+        },
+        userId: user._id,
+        postedBy: {
+          _type: 'postedBy',
+          _ref: user._id,
+        },
+        category,
+      };
+      client.create(doc).then(() => {
         navigate('/');
-       })
+      });
     } else {
       setFields(true);
 
-      setTimeout(() => setFields(false), 2000)
+      setTimeout(
+        () => {
+          setFields(false);
+        },
+        2000,
+      );
     }
   };
 
@@ -124,7 +127,7 @@ const CreatePin = ({ user }) => {
           {user && (
             <div className="flex gap-2 mt-2 mb-2 items-center bg-white rounded-lg ">
               <img
-                src={user.image}
+                src={user.image} //work about it
                 className="w-10 h-10 rounded-full"
                 alt="user-profile"
               />
